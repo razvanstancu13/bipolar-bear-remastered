@@ -1,0 +1,37 @@
+# Unity regenerates these from Assets / Packages / ProjectSettings
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Bb]uild/
+/[Bb]uilds/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# IDE / generated project files
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.unityproj
+
+# Crash reports, OS junk
+sysinfo.txt
+crashlytics-build.properties
+*.apk
+*.aab
+.DS_Store
+Thumbs.db
+
+# Claude Code (local AI assistant files)
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+.mcp.json
