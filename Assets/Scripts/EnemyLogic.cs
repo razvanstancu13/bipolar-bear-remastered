@@ -4,18 +4,14 @@ using UnityEngine;
 // spear (the strike kills the bear unless the bear is punching); a roar (the Growl object) stuns it for a while.
 public class EnemyLogic : MonoBehaviour
 {
-	const float StartSpeed = 8f;                     // the walk's speed is eased from this towards moveSpeed each step
 	const float StunSeconds = 3f;
 	const float ReachHeight = 2.5f;                  // the bear must be within this much height to be in reach
 	const float StrikeExtraReach = 0.3f;             // the spear tip reaches a bit further than where it starts
 	public const float DeathSeconds = 0.8f;          // punched: its death clip, then it is gone
 
 	[Header("Walk")]
-	public float gravity = -25f;                     // (not used: the Rigidbody2D falls by itself)
-	public float moveSpeed = 4f;
+	public float walkSpeed = 5.2f;                   // set on the body each physics step
 	public float moveRadius = 5f;
-	public float groundDamping = 20f;
-	public Vector3 _velocity;
 
 	[Header("Spear attack (3D version)")]
 	public float attackRange = 3.2f;
@@ -118,8 +114,7 @@ public class EnemyLogic : MonoBehaviour
 		float x = transform.position.x;
 		if (_direction > 0f ? x > _startX + moveRadius : x < _startX - moveRadius)
 			_direction = -_direction;
-		_velocity = new Vector3(Mathf.Lerp(_direction * StartSpeed, _direction * moveSpeed, Time.fixedDeltaTime * groundDamping), 0f);
-		_body.linearVelocity = _velocity;
+		_body.linearVelocity = new Vector2(_direction * walkSpeed, 0f);
 	}
 
 	// true while the attack runs (the eskimo stands still)

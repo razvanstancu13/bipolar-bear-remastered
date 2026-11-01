@@ -52,8 +52,8 @@ public class PlayerController : MonoBehaviour
 	[Header("Movement")]
 	public float gravity = -25f;
 	public float runSpeed = 8f;
-	public float groundDamping = 20f;                         // how fast it changes direction on the ground
-	public float inAirDamping = 5f;
+	public float groundSpeedHalfLife = 0.027138f;             // seconds for half the gap to the wanted walking speed to close
+	public float airSpeedHalfLife = 0.131576f;                // the same in the air: slower, it steers less sharply
 	public float jumpHeight = 3f;
 	public float jumpBonus = 3f;                              // added while super jump is on
 
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
 
 	PlayerInput _input;
 	PlayerAbility _activeAbility;                             // the ability inAction is running
-	Vector3 _velocity;
+	Vector2 _velocity;
 	float _horizontal;                                        // -1, 0, 1: the direction walked
 	float _actionTimer, _moodTimer, _extraAbilityTimer, _penaltyTimer;
 	bool _penalty, _dead;
@@ -221,9 +221,8 @@ public class PlayerController : MonoBehaviour
 		float facing = transform.localScale.x < 0f ? -1f : 1f;   // before Walk turns it (the roar goes this way)
 		if (!_penalty)
 		{
-			_velocity = _motor.Velocity;
 			if (_motor.IsGrounded)
-				_velocity.y = 0;
+				_velocity.y = 0f;
 			Walk();
 			Jump();
 			UpdatePillAbility();
@@ -231,7 +230,7 @@ public class PlayerController : MonoBehaviour
 		}
 		else
 		{
-			_velocity = Vector3.zero;
+			_velocity = Vector2.zero;
 			_horizontal = 0f;                                    // asleep / crying: it stops where it is
 		}
 		Move();
@@ -245,7 +244,7 @@ public class PlayerController : MonoBehaviour
 		if (_dead) return;
 		_dead = true;
 		_input = default;
-		_velocity = Vector3.zero;
+		_velocity = Vector2.zero;
 		_horizontal = 0f;
 		_killer = killer;
 		// first the hit: the pose freezes where it was struck and a burst shows at the contact
@@ -286,7 +285,7 @@ public class PlayerController : MonoBehaviour
 	// dead: falls to the ground and stays there
 	void FallDead()
 	{
-		_velocity = new Vector3(0f, _motor.IsGrounded ? 0f : _velocity.y + gravity * Time.fixedDeltaTime, 0f);
+		_velocity = new Vector2(0f, _motor.IsGrounded ? 0f : _velocity.y + gravity * Time.fixedDeltaTime);
 		_motor.Move(_velocity * Time.fixedDeltaTime);
 	}
 
@@ -412,17 +411,20 @@ public class PlayerController : MonoBehaviour
 	{
 		if (!_motor.IsGrounded || !_input.Jump)
 			return;
-		_velocity.y = Mathf.Sqrt(2f * jumpHeight * -gravity);
+		_velocity.y = -gravity * SecondsToTop;                   // gravity takes all of it away by the top
 		PlayJumpClip();
 		bool super = _currentAbility == PlayerAbility.SuperJump || _extraAbility == PlayerAbility.SuperJump;
 		_audio.PlayOneShot(super && soundSuperJump ? soundSuperJump : soundJump, 1f);
 	}
 
+	// a body under constant gravity rises `jumpHeight` in this time
+	float SecondsToTop => Mathf.Sqrt(2f * jumpHeight / -gravity);
+
 	// the Jump clip from its take-off, at the speed that makes its airborne part last as long as this jump's flight
 	// (a super jump flies longer): the bear leaves and lands with the physics
 	void PlayJumpClip()
 	{
-		float flight = 2f * _velocity.y / -gravity;
+		float flight = 2f * SecondsToTop;
 		if (jumpClipSeconds <= 0f || jumpLanding <= jumpTakeoff || flight <= 0f)
 		{
 			AnimStates.Play(_animator, AnimStates.Jump);
@@ -446,12 +448,18 @@ public class PlayerController : MonoBehaviour
 		punchFx.Emit(16);
 	}
 
+	// The walking speed closes in on the wanted one, the gap halving every half-life; gravity keeps pulling, also on the
+	// ground (the motor reports the bear grounded when it stops that fall). What the motor blocked is gone from the
+	// velocity afterwards, so it does not keep pushing into a wall or a platform.
 	void Move()
 	{
-		float damping = _motor.IsGrounded ? groundDamping : inAirDamping;
-		_velocity.x = Mathf.Lerp(_velocity.x, _horizontal * runSpeed, Time.fixedDeltaTime * damping);
+		float wanted = _horizontal * runSpeed;
+		float halfLife = _motor.IsGrounded ? groundSpeedHalfLife : airSpeedHalfLife;
+		_velocity.x = wanted + (_velocity.x - wanted) * Mathf.Pow(0.5f, Time.fixedDeltaTime / halfLife);
 		_velocity.y += gravity * Time.fixedDeltaTime;
 		_motor.Move(_velocity * Time.fixedDeltaTime);
+		if (!_dead)                                              // (the move can kill it: Die has set the velocity)
+			_velocity = _motor.Velocity;
 	}
 
 	// ---------- abilities ----------

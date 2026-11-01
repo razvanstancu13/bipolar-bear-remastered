@@ -40,7 +40,7 @@ powershell -File tools\test_run.ps1 -NoBuild -Modes roar  # one run on the last 
 nothing in normal play) and checks the logs and screenshots it writes to `Logs/test`:
 
 - **normal**: the bear stands with its feet on the ground, its sounds, the menu / level music, the crystal glow and
-  volcano smoke, a blizzard, the jump animation in step with the jump, stopping at a wall, picking up a pill, the
+  volcano smoke, a blizzard, the jump animation in step with the jump, how the bear speeds up, stops, steers in the air and how high it jumps, how fast the eskimos walk, stopping at a wall, picking up a pill, the
   head stopping under a platform, the characters in front of a platform
 - **walk**: the bear walks into the first danger and dies with its death animation
 - **eskimo**: a stunned eskimo (stars), then its spear thrust kills the bear

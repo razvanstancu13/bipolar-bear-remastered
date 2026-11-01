@@ -133,10 +133,12 @@ public class GameTestRun : MonoBehaviour
 			yield return EffectShots();
 			yield return BlizzardCheck();
 			yield return JumpSyncCheck();
+			yield return MoveFeelCheck();
 			yield return WallCheck();
 			yield return PillCheck();
 			yield return HeadBumpCheck();
 			yield return UnderPlatformShot();
+			yield return EskimoWalkCheck();
 			yield return SpinCheck();
 		}
 	}
@@ -517,11 +519,91 @@ public class GameTestRun : MonoBehaviour
 		return new Rect(centre - size * 0.5f, size);
 	}
 
+	// patrolling eskimos walk at the speed the game is tuned to (walkSpeed; some read slightly lower after a physics step)
+	IEnumerator EskimoWalkCheck()
+	{
+		const float Tuned = 5.16f, Tolerance = 0.1f;
+		yield return new WaitForFixedUpdate();
+		int walking = 0;
+		float slowest = float.MaxValue, fastest = 0f;
+		foreach (var e in FindObjectsByType<EnemyLogic>())
+		{
+			float speed = Mathf.Abs(e.GetComponent<Rigidbody2D>().linearVelocity.x);
+			if (speed < 0.1f) continue;                  // stunned or thrusting
+			walking++;
+			slowest = Mathf.Min(slowest, speed);
+			fastest = Mathf.Max(fastest, speed);
+		}
+		Log("eskimo walk: " + walking + " walking at " + slowest.ToString("F3") + ".." + fastest.ToString("F3"));
+		if (walking == 0 || Mathf.Abs(slowest - Tuned) > Tolerance || Mathf.Abs(fastest - Tuned) > Tolerance)
+			Error("the eskimos do not walk at " + Tuned);
+	}
+
+	// the bear's speed, step by step: starting and stopping on the ground, steering in the air; and how high it jumps
+	IEnumerator MoveFeelCheck()
+	{
+		var p = FindAnyObjectByType<PlayerController>();
+		var motor = p.GetComponent<BearMotor>();
+		_bearStart = p.transform.position;
+		yield return new WaitForSeconds(0.2f);
+
+		string Speeds(System.Collections.Generic.List<float> v) => string.Join(" ", v.ConvertAll(s => s.ToString("F3")));
+		IEnumerator Record(System.Collections.Generic.List<float> into, int steps)
+		{
+			for (int i = 0; i < steps; i++)
+			{
+				yield return new WaitForFixedUpdate();
+				into.Add(motor.Velocity.x);
+			}
+		}
+
+		var starting = new System.Collections.Generic.List<float>();
+		var stopping = new System.Collections.Generic.List<float>();
+		var steering = new System.Collections.Generic.List<float>();
+		_pressRight = true;
+		yield return Record(starting, 8);
+		_pressRight = false;
+		yield return Record(stopping, 8);
+		Log("feel: starting " + Speeds(starting));
+		Log("feel: stopping " + Speeds(stopping));
+
+		// a jump straight up, measured to its top, then steering in the air on the way down
+		yield return new WaitForSeconds(0.2f);
+		float height = p.jumpHeight, ground = p.transform.position.y, top = ground;
+		_pressJump = true;
+		yield return null;
+		yield return new WaitForFixedUpdate();
+		_pressJump = false;
+		while (motor.Velocity.y > 0f)
+		{
+			top = Mathf.Max(top, p.transform.position.y);
+			yield return new WaitForFixedUpdate();
+		}
+		top = Mathf.Max(top, p.transform.position.y);
+		_pressRight = true;
+		yield return Record(steering, 8);
+		_pressRight = false;
+		Log("feel: steering in the air " + Speeds(steering));
+		Log("feel: jump height " + height.ToString("F1") + " rose " + (top - ground).ToString("F3"));
+		// (the physics steps lose a little: half a step's rise)
+		if (Mathf.Abs(top - ground - height) > 0.3f) Error("the jump's height is off");
+		// the gap to the wanted speed shrinks by this share each step (as tuned: 40 % on the ground, 10 % in the air)
+		void Rate(string what, System.Collections.Generic.List<float> v, float target, float expected)
+		{
+			float last = target - v[v.Count - 1], before = target - v[v.Count - 2], rate = last / before;
+			if (Mathf.Abs(rate - expected) > 0.01f) Error(what + " changes speed at the wrong rate: " + rate.ToString("F3"));
+		}
+		Rate("starting", starting, p.runSpeed, 0.6f);
+		Rate("stopping", stopping, 0f, 0.6f);
+		Rate("steering", steering, p.runSpeed, 0.9f);
+		yield return new WaitForSeconds(1.5f);
+		yield return BackToStart(p);
+	}
+
 	// walking left from the start the bear must stop against the igloo's wall (the level's end)
 	IEnumerator WallCheck()
 	{
 		var p = FindAnyObjectByType<PlayerController>();
-		_bearStart = p.transform.position;
 		_pressLeft = true;
 		yield return new WaitForSeconds(2f);
 		_pressLeft = false;

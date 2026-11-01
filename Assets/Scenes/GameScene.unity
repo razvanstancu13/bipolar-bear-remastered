@@ -13180,11 +13180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 3
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -26672,11 +26669,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 3.1
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -28178,8 +28172,8 @@ MonoBehaviour:
   soundCry: {fileID: 8300000, guid: 1cbc333c4ddcc5b4cace8203c3b6d784, type: 3}
   gravity: -35
   runSpeed: 8
-  groundDamping: 20
-  inAirDamping: 5
+  groundSpeedHalfLife: 0.027138
+  airSpeedHalfLife: 0.131576
   jumpHeight: 5
   jumpBonus: 3
   inAction: 0
@@ -28467,11 +28461,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 3
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -30618,11 +30609,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 4
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -38342,11 +38330,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 2.7
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -38475,11 +38460,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 3
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -40032,11 +40014,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 2
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -41150,11 +41129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 2
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -83957,11 +83933,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 2
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -114995,11 +114968,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 2
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -117862,11 +117832,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 2
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -138373,11 +138340,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 2
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -140433,11 +140397,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 2
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -189413,11 +189374,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 2
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -233336,11 +233294,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 2
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
@@ -274377,11 +274332,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2ace071ea7924db7e078271afe555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: -25
-  moveSpeed: 1
+  walkSpeed: 5.2
   moveRadius: 3
-  groundDamping: 20
-  _velocity: {x: 0, y: 0, z: 0}
   attackRange: 3.2
   attackSeconds: 0.8
   strikeFrom: 0.38
